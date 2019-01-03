@@ -62,14 +62,14 @@
             <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
         <!--</table>-->
 
-        <table tableName="poi" domainObjectName="Poi">
-            <generatedKey column="poiId" sqlStatement="Mysql" identity="true"/>
-        </table>
-
-
-        <!--<table tableName="check" domainObjectName="Check">-->
-            <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->
+        <!--<table tableName="poi" domainObjectName="Poi">-->
+            <!--<generatedKey column="poiId" sqlStatement="Mysql" identity="true"/>-->
         <!--</table>-->
+
+
+        <table tableName="check" domainObjectName="Check">
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+        </table>
 
         <!--<table tableName="relations" domainObjectName="Relations">-->
             <!--<generatedKey column="id" sqlStatement="Mysql" identity="true"/>-->

@@ -312,7 +312,7 @@
     GROUP BY
         user_id
   </select>
-  
+
   <select id="getPoiNumsAndAvgScore" parameterType="int" resultType="map">
     SELECT
         poi_id,
@@ -349,8 +349,26 @@
   </select>
 
   <insert id="insertCheck" parameterType="com.huanghe.lbsn.Entity.Check">
-    insert into check(user_id,poi_id,poi_name,latitude,longitude,rate,content,createTime) values (#{userId},#{poiId},#{poiName},#{latitude},#{longitude},#{rate},#{content},#{createtime})
+    INSERT INTO `check` (
+        user_id,
+        poi_id,
+        poi_name,
+        longitude,
+        latitude,
+        rate,
+        content,
+        createTime
+    )
+    VALUES
+        (
+            #{userId},
+            #{poiId},
+            #{poiName},
+            #{longitude},
+            #{latitude},
+            #{rate},
+            #{content},
+            #{createtime}
+        )
   </insert>
-
-
 </mapper>

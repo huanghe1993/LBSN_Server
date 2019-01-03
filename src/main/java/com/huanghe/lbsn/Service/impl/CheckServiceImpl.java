@@ -1,7 +1,6 @@
 package com.huanghe.lbsn.Service.impl;
 
 import com.huanghe.lbsn.Entity.Check;
-import com.huanghe.lbsn.Entity.CheckExample;
 import com.huanghe.lbsn.Entity.Poi;
 import com.huanghe.lbsn.Mapper.CheckMapper;
 import com.huanghe.lbsn.Mapper.PoiMapper;

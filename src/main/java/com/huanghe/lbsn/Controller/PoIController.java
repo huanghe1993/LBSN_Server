@@ -1,6 +1,5 @@
 package com.huanghe.lbsn.Controller;
 
-import com.huanghe.lbsn.Entity.Check;
 import com.huanghe.lbsn.Entity.Poi;
 import com.huanghe.lbsn.Entity.User;
 import com.huanghe.lbsn.Service.CheckService;
