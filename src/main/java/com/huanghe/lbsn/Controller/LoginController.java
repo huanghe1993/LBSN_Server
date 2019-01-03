@@ -1,0 +1,166 @@
+package com.huanghe.lbsn.Controller;
+
+import com.huanghe.lbsn.Entity.User;
+import com.huanghe.lbsn.Service.UserService;
+import com.huanghe.lbsn.utils.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * @Author huanghe
+ * @Date 2018/12/27 15:11
+ * @Description 登录注册功能
+ */
+@RestController
+@RequestMapping("/api/user")
+public class LoginController {
+
+    @Autowired
+    private UserService userService;
+
+    /**
+     * 用户注册
+     * @param phone
+     * @param password
+     * @param username
+     * @param repwd
+     * @return
+     */
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public Object register(@RequestParam("mobile") String phone,
+                           @RequestParam("password") String password,
+                           @RequestParam("name") String username,
+                           @RequestParam("repwd") String repwd){
+
+        BaseResponse<User> responseMessage = new BaseResponse<>();
+        responseMessage.setTime(System.currentTimeMillis());
+
+        if (password == null || "".equals(password.trim())) {
+            responseMessage.setStatus(0);
+            responseMessage.setMsg("密码不能为空！");
+            return  responseMessage;
+        }
+
+        if (username == null || "".equals(username.trim())) {
+            responseMessage.setStatus(0);
+            responseMessage.setMsg("用户名不能为空！");
+            return  responseMessage;
+        }
+
+        if (repwd == null || "".equals(repwd.trim())) {
+            responseMessage.setStatus(0);
+            responseMessage.setMsg("请输入确认密码！");
+            return  responseMessage;
+        }
+
+        if (!password.equals(repwd.trim())) {
+            responseMessage.setStatus(0);
+            responseMessage.setMsg("两次密码输入不一致！");
+            return  responseMessage;
+        }
+
+        if (userService.findByUsername(username).size() != 0) {
+            responseMessage.setStatus(0);
+            responseMessage.setMsg("用户名已经被占用！");
+            return  responseMessage;
+        }
+
+        if (userService.findByPhone(phone).size()!= 0) {
+            responseMessage.setStatus(0);
+            responseMessage.setMsg("手机号已经存在！");
+            return  responseMessage;
+        }
+
+        User user = new User();
+        user.setUsercreatetime(new Date(System.currentTimeMillis()));
+        user.setMobile(phone);
+        user.setPassword(password);
+        user.setName(username);
+        userService.insertUser(user);
+
+        responseMessage.setStatus(1);
+        responseMessage.setMsg("手注册成功!");
+        responseMessage.setObjectbean(user);
+
+        return responseMessage;
+    }
+
+    /**
+     * 用户登录
+     * @param request
+     * @param phone
+     * @param password
+     * @return
+     */
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public Object login(HttpServletRequest request,
+                        @RequestParam("mobile") String phone,
+                        @RequestParam("password") String password){
+        BaseResponse<User> responseMessage = new BaseResponse<>();
+        responseMessage.setTime(System.currentTimeMillis());
+        if(phone == null||password==null ){
+            responseMessage.setStatus(0);
+            responseMessage.setMsg("用户名或者密码不能为空");
+            return  responseMessage;
+        }
+        List<User> user = userService.findByPhoneAndPassword(phone, password);
+        if (user.size() == 0) {
+            responseMessage.setStatus(0);
+            responseMessage.setMsg("用户名或者是密码错误");
+            return responseMessage;
+        }
+        String tokenId = TokenProccessor.getInstance().makeToken();
+        // 用户保存在session中，key为token，值为user
+        TokenTools.saveToken(request, tokenId, user.get(0));
+        //设置session的过期时间,这里设置的是永久不过期
+        TokenTools.setExpireTime(request,-1);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("name", user.get(0).getName());
+        map.put("userId", user.get(0).getUserid());
+        map.put("mobile", user.get(0).getMobile());
+        map.put("password", user.get(0).getPassword());
+        map.put("token", tokenId);
+
+        responseMessage.setStatus(1);
+        responseMessage.setObjectbean(map);
+        responseMessage.setMsg("登录成功");
+        responseMessage.setTime(System.currentTimeMillis());
+        return responseMessage;
+    }
+
+    /**
+     * 退出登录
+     * @return
+     */
+    @PostMapping(value="/logout")
+    public BaseResponse<?>  logout(HttpServletRequest request,@RequestParam("token") String tokenServerkey) {
+        BaseResponse<String> responseMessage = new BaseResponse<>();
+        responseMessage.setTime(System.currentTimeMillis());
+        if (tokenServerkey == null) {
+            responseMessage.setStatus(0);
+            responseMessage.setMsg("请先登录！");
+            return responseMessage;
+        }
+        User user = (User)request.getSession().getAttribute(tokenServerkey);
+        if (user == null) {
+            responseMessage.setStatus(0);
+            responseMessage.setMsg("token非法");
+            return responseMessage;
+        }
+
+        TokenTools.removeToken(request,tokenServerkey);
+        responseMessage.setStatus(1);
+        responseMessage.setMsg("退出成功");
+
+        return responseMessage;
+    }
+}
+
+

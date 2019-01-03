@@ -1,0 +1,76 @@
+2018-12-29 20:38:22,645 [main] [INFO] | StartupInfoLogger.logStarting(48) | Starting LbsnApplication on DESKTOP-U77K5K8 with PID 3516 (D:\code\java\lbsn-recommand\target\classes started by huanghe in D:\code\java\lbsn-recommand)
+2018-12-29 20:38:22,650 [main] [INFO] | SpringApplication.logStartupProfileInfo(593) | No active profile set, falling back to default profiles: default
+2018-12-29 20:38:22,699 [main] [INFO] | AbstractApplicationContext.prepareRefresh(583) | Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@43f82e78: startup date [Sat Dec 29 20:38:22 CST 2018]; root of context hierarchy
+2018-12-29 20:38:22,799 [background-preinit] [INFO] | Version.<clinit>(30) | HV000001: Hibernate Validator 5.3.6.Final
+2018-12-29 20:38:23,623 [main] [INFO] | TomcatEmbeddedServletContainer.initialize(92) | Tomcat initialized with port(s): 8081 (http)
+2018-12-29 20:38:23,636 [main] [INFO] | DirectJDKLog.log(180) | Initializing ProtocolHandler ["http-nio-8081"]
+2018-12-29 20:38:23,647 [main] [INFO] | DirectJDKLog.log(180) | Starting service [Tomcat]
+2018-12-29 20:38:23,647 [main] [INFO] | DirectJDKLog.log(180) | Starting Servlet Engine: Apache Tomcat/8.5.35
+2018-12-29 20:38:23,748 [localhost-startStop-1] [INFO] | DirectJDKLog.log(180) | Initializing Spring embedded WebApplicationContext
+2018-12-29 20:38:23,748 [localhost-startStop-1] [INFO] | EmbeddedWebApplicationContext.prepareEmbeddedWebApplicationContext(287) | Root WebApplicationContext: initialization completed in 1049 ms
+2018-12-29 20:38:23,863 [localhost-startStop-1] [INFO] | ServletRegistrationBean.onStartup(191) | Mapping servlet: 'statViewServlet' to [/druid/*]
+2018-12-29 20:38:23,865 [localhost-startStop-1] [INFO] | ServletRegistrationBean.onStartup(191) | Mapping servlet: 'dispatcherServlet' to [/]
+2018-12-29 20:38:23,868 [localhost-startStop-1] [INFO] | AbstractFilterRegistrationBean.configure(259) | Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-12-29 20:38:23,869 [localhost-startStop-1] [INFO] | AbstractFilterRegistrationBean.configure(259) | Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-12-29 20:38:23,869 [localhost-startStop-1] [INFO] | AbstractFilterRegistrationBean.configure(259) | Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-12-29 20:38:23,869 [localhost-startStop-1] [INFO] | AbstractFilterRegistrationBean.configure(259) | Mapping filter: 'requestContextFilter' to: [/*]
+2018-12-29 20:38:24,584 [main] [INFO] | RequestMappingHandlerAdapter.initControllerAdviceCache(556) | Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@43f82e78: startup date [Sat Dec 29 20:38:22 CST 2018]; root of context hierarchy
+2018-12-29 20:38:24,631 [main] [INFO] | AbstractHandlerMethodMapping$MappingRegistry.register(544) | Mapped "{[/api/user/register],methods=[POST]}" onto public java.lang.Object com.huanghe.lbsn.Controller.LoginController.register(java.lang.String,java.lang.String,java.lang.String,java.lang.String)
+2018-12-29 20:38:24,632 [main] [INFO] | AbstractHandlerMethodMapping$MappingRegistry.register(544) | Mapped "{[/api/user/logout],methods=[POST]}" onto public com.huanghe.lbsn.utils.BaseResponse<?> com.huanghe.lbsn.Controller.LoginController.logout(javax.servlet.http.HttpServletRequest,java.lang.String)
+2018-12-29 20:38:24,632 [main] [INFO] | AbstractHandlerMethodMapping$MappingRegistry.register(544) | Mapped "{[/api/user/login],methods=[POST]}" onto public java.lang.Object com.huanghe.lbsn.Controller.LoginController.login(javax.servlet.http.HttpServletRequest,java.lang.String,java.lang.String)
+2018-12-29 20:38:24,634 [main] [INFO] | AbstractHandlerMethodMapping$MappingRegistry.register(544) | Mapped "{[/api/recommand],methods=[GET]}" onto public java.lang.Object com.huanghe.lbsn.Controller.RecommandController.getPOI(java.lang.String,java.lang.String,java.lang.String)
+2018-12-29 20:38:24,634 [main] [INFO] | AbstractHandlerMethodMapping$MappingRegistry.register(544) | Mapped "{[/hello]}" onto public java.lang.String com.huanghe.lbsn.HelloController.say()
+2018-12-29 20:38:24,637 [main] [INFO] | AbstractHandlerMethodMapping$MappingRegistry.register(544) | Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2018-12-29 20:38:24,638 [main] [INFO] | AbstractHandlerMethodMapping$MappingRegistry.register(544) | Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2018-12-29 20:38:24,665 [main] [INFO] | AbstractUrlHandlerMapping.registerHandler(362) | Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-12-29 20:38:24,665 [main] [INFO] | AbstractUrlHandlerMapping.registerHandler(362) | Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-12-29 20:38:24,695 [main] [INFO] | AbstractUrlHandlerMapping.registerHandler(362) | Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-12-29 20:38:24,960 [main] [INFO] | MBeanExporter.afterSingletonsInstantiated(431) | Registering beans for JMX exposure on startup
+2018-12-29 20:38:24,961 [main] [INFO] | MBeanExporter.autodetect(918) | Bean with name 'druid' has been autodetected for JMX exposure
+2018-12-29 20:38:24,966 [main] [INFO] | MBeanExporter.registerBeanInstance(672) | Located MBean 'druid': registering with JMX server as MBean [com.alibaba.druid.pool:name=druid,type=DruidDataSource]
+2018-12-29 20:38:24,976 [main] [INFO] | DirectJDKLog.log(180) | Starting ProtocolHandler ["http-nio-8081"]
+2018-12-29 20:38:24,989 [main] [INFO] | DirectJDKLog.log(180) | Using a shared selector for servlet write/read
+2018-12-29 20:38:25,003 [main] [INFO] | TomcatEmbeddedServletContainer.start(216) | Tomcat started on port(s): 8081 (http)
+2018-12-29 20:38:25,008 [main] [INFO] | StartupInfoLogger.logStarted(57) | Started LbsnApplication in 2.57 seconds (JVM running for 3.545)
+2018-12-29 20:39:07,062 [http-nio-8081-exec-1] [INFO] | DirectJDKLog.log(180) | Initializing Spring FrameworkServlet 'dispatcherServlet'
+2018-12-29 20:39:07,063 [http-nio-8081-exec-1] [INFO] | FrameworkServlet.initServletBean(489) | FrameworkServlet 'dispatcherServlet': initialization started
+2018-12-29 20:39:07,078 [http-nio-8081-exec-1] [INFO] | FrameworkServlet.initServletBean(508) | FrameworkServlet 'dispatcherServlet': initialization completed in 15 ms
+2018-12-29 20:39:10,205 [http-nio-8081-exec-1] [INFO] | DruidDataSource.init(930) | {dataSource-1} inited
+2018-12-29 20:40:19,239 [main] [INFO] | StartupInfoLogger.logStarting(48) | Starting LbsnApplication on DESKTOP-U77K5K8 with PID 8124 (D:\code\java\lbsn-recommand\target\classes started by huanghe in D:\code\java\lbsn-recommand)
+2018-12-29 20:40:19,242 [main] [INFO] | SpringApplication.logStartupProfileInfo(593) | No active profile set, falling back to default profiles: default
+2018-12-29 20:40:19,282 [main] [INFO] | AbstractApplicationContext.prepareRefresh(583) | Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@e54303: startup date [Sat Dec 29 20:40:19 CST 2018]; root of context hierarchy
+2018-12-29 20:40:19,366 [background-preinit] [INFO] | Version.<clinit>(30) | HV000001: Hibernate Validator 5.3.6.Final
+2018-12-29 20:40:20,251 [main] [INFO] | TomcatEmbeddedServletContainer.initialize(92) | Tomcat initialized with port(s): 8081 (http)
+2018-12-29 20:40:20,265 [main] [INFO] | DirectJDKLog.log(180) | Initializing ProtocolHandler ["http-nio-8081"]
+2018-12-29 20:40:20,278 [main] [INFO] | DirectJDKLog.log(180) | Starting service [Tomcat]
+2018-12-29 20:40:20,279 [main] [INFO] | DirectJDKLog.log(180) | Starting Servlet Engine: Apache Tomcat/8.5.35
+2018-12-29 20:40:20,381 [localhost-startStop-1] [INFO] | DirectJDKLog.log(180) | Initializing Spring embedded WebApplicationContext
+2018-12-29 20:40:20,381 [localhost-startStop-1] [INFO] | EmbeddedWebApplicationContext.prepareEmbeddedWebApplicationContext(287) | Root WebApplicationContext: initialization completed in 1100 ms
+2018-12-29 20:40:20,496 [localhost-startStop-1] [INFO] | ServletRegistrationBean.onStartup(191) | Mapping servlet: 'statViewServlet' to [/druid/*]
+2018-12-29 20:40:20,497 [localhost-startStop-1] [INFO] | ServletRegistrationBean.onStartup(191) | Mapping servlet: 'dispatcherServlet' to [/]
+2018-12-29 20:40:20,500 [localhost-startStop-1] [INFO] | AbstractFilterRegistrationBean.configure(259) | Mapping filter: 'characterEncodingFilter' to: [/*]
+2018-12-29 20:40:20,500 [localhost-startStop-1] [INFO] | AbstractFilterRegistrationBean.configure(259) | Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2018-12-29 20:40:20,500 [localhost-startStop-1] [INFO] | AbstractFilterRegistrationBean.configure(259) | Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2018-12-29 20:40:20,500 [localhost-startStop-1] [INFO] | AbstractFilterRegistrationBean.configure(259) | Mapping filter: 'requestContextFilter' to: [/*]
+2018-12-29 20:40:21,231 [main] [INFO] | RequestMappingHandlerAdapter.initControllerAdviceCache(556) | Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@e54303: startup date [Sat Dec 29 20:40:19 CST 2018]; root of context hierarchy
+2018-12-29 20:40:21,284 [main] [INFO] | AbstractHandlerMethodMapping$MappingRegistry.register(544) | Mapped "{[/api/user/register],methods=[POST]}" onto public java.lang.Object com.huanghe.lbsn.Controller.LoginController.register(java.lang.String,java.lang.String,java.lang.String,java.lang.String)
+2018-12-29 20:40:21,285 [main] [INFO] | AbstractHandlerMethodMapping$MappingRegistry.register(544) | Mapped "{[/api/user/login],methods=[POST]}" onto public java.lang.Object com.huanghe.lbsn.Controller.LoginController.login(javax.servlet.http.HttpServletRequest,java.lang.String,java.lang.String)
+2018-12-29 20:40:21,285 [main] [INFO] | AbstractHandlerMethodMapping$MappingRegistry.register(544) | Mapped "{[/api/user/logout],methods=[POST]}" onto public com.huanghe.lbsn.utils.BaseResponse<?> com.huanghe.lbsn.Controller.LoginController.logout(javax.servlet.http.HttpServletRequest,java.lang.String)
+2018-12-29 20:40:21,287 [main] [INFO] | AbstractHandlerMethodMapping$MappingRegistry.register(544) | Mapped "{[/api/recommand],methods=[GET]}" onto public java.lang.Object com.huanghe.lbsn.Controller.RecommandController.getPOI(java.lang.String,java.lang.String,java.lang.String)
+2018-12-29 20:40:21,287 [main] [INFO] | AbstractHandlerMethodMapping$MappingRegistry.register(544) | Mapped "{[/hello]}" onto public java.lang.String com.huanghe.lbsn.HelloController.say()
+2018-12-29 20:40:21,290 [main] [INFO] | AbstractHandlerMethodMapping$MappingRegistry.register(544) | Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2018-12-29 20:40:21,291 [main] [INFO] | AbstractHandlerMethodMapping$MappingRegistry.register(544) | Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2018-12-29 20:40:21,320 [main] [INFO] | AbstractUrlHandlerMapping.registerHandler(362) | Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-12-29 20:40:21,320 [main] [INFO] | AbstractUrlHandlerMapping.registerHandler(362) | Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-12-29 20:40:21,356 [main] [INFO] | AbstractUrlHandlerMapping.registerHandler(362) | Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2018-12-29 20:40:21,608 [main] [INFO] | MBeanExporter.afterSingletonsInstantiated(431) | Registering beans for JMX exposure on startup
+2018-12-29 20:40:21,609 [main] [INFO] | MBeanExporter.autodetect(918) | Bean with name 'druid' has been autodetected for JMX exposure
+2018-12-29 20:40:21,613 [main] [INFO] | MBeanExporter.registerBeanInstance(672) | Located MBean 'druid': registering with JMX server as MBean [com.alibaba.druid.pool:name=druid,type=DruidDataSource]
+2018-12-29 20:40:21,621 [main] [INFO] | DirectJDKLog.log(180) | Starting ProtocolHandler ["http-nio-8081"]
+2018-12-29 20:40:21,631 [main] [INFO] | DirectJDKLog.log(180) | Using a shared selector for servlet write/read
+2018-12-29 20:40:21,644 [main] [INFO] | TomcatEmbeddedServletContainer.start(216) | Tomcat started on port(s): 8081 (http)
+2018-12-29 20:40:21,648 [main] [INFO] | StartupInfoLogger.logStarted(57) | Started LbsnApplication in 2.646 seconds (JVM running for 3.632)
+2018-12-29 20:40:26,344 [http-nio-8081-exec-1] [INFO] | DirectJDKLog.log(180) | Initializing Spring FrameworkServlet 'dispatcherServlet'
+2018-12-29 20:40:26,344 [http-nio-8081-exec-1] [INFO] | FrameworkServlet.initServletBean(489) | FrameworkServlet 'dispatcherServlet': initialization started
+2018-12-29 20:40:26,359 [http-nio-8081-exec-1] [INFO] | FrameworkServlet.initServletBean(508) | FrameworkServlet 'dispatcherServlet': initialization completed in 15 ms
+2018-12-29 20:40:29,060 [http-nio-8081-exec-1] [INFO] | DruidDataSource.init(930) | {dataSource-1} inited
