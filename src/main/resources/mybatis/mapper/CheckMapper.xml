@@ -312,5 +312,45 @@
     GROUP BY
         user_id
   </select>
+  
+  <select id="getPoiNumsAndAvgScore" parameterType="int" resultType="map">
+    SELECT
+        poi_id,
+        COUNT(poi_id) AS commentNums,
+        AVG(rate) AS averageScore
+    FROM
+        `check`
+    WHERE
+        poi_id = #{poiId}
+    GROUP BY
+        poi_id
+  </select>
+
+  <select id="getCommentListByPoiId" parameterType="int" resultType="map">
+    SELECT
+        id AS commentId,
+        content AS commentContent,
+        rate AS score,
+        createTime AS time,
+        mobile as mobile
+
+    FROM
+        `check`,
+        `user`
+    WHERE
+        poi_id = #{poiId}
+    AND `user`.userId = `check`.user_id
+    ORDER BY
+        createTime
+  </select>
+
+  <select id="getCheckByUserIdAndPoiId" parameterType="map" resultType="map">
+    SELECT * FROM `check` WHERE user_id =#{userId} AND poi_id=#{poiId}
+  </select>
+
+  <insert id="insertCheck" parameterType="com.huanghe.lbsn.Entity.Check">
+    insert into check(user_id,poi_id,poi_name,latitude,longitude,rate,content,createTime) values (#{userId},#{poiId},#{poiName},#{latitude},#{longitude},#{rate},#{content},#{createtime})
+  </insert>
+
 
 </mapper>

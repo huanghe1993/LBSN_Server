@@ -37,4 +37,12 @@ public interface CheckMapper {
     List<Map<String, Object>> getCheckIn();
 
     List<Map<String, Object>> getUserCheckCount();
+
+    Map<String, Object> getPoiNumsAndAvgScore(Integer poiId);
+
+    List<Map<String, Object>> getCommentListByPoiId(Integer poiId);
+
+    List<Map<String,Object>> getCheckByUserIdAndPoiId(Map map);
+
+    void insertCheck(Check check);
 }
