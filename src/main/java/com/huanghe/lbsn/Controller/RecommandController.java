@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api")
 public class RecommandController {
+
+    public static final String ADDRESS = "Http://47.107.95.148:8081";
 
     @Autowired
     private RecommandService recommandService;
@@ -70,8 +73,20 @@ public class RecommandController {
         responseMessage.setStatus(1);
         responseMessage.setMsg("获取成功！");
         List<Poi> pois =  recommandService.recommand(request,token,latitude,longitude);
+        List<Map> lists = new ArrayList<>();
+        for (Poi poi : pois) {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("poiId", poi.getPoiId());
+            map.put("address", poi.getAddress());
+            map.put("cityName", poi.getCityName());
+            map.put("latitude", poi.getLatitude());
+            map.put("longitude", poi.getLongitude());
+            map.put("category", poi.getCategory());
+            map.put("tinyPhoto", ADDRESS + poi.getTinyPhoto());
+            lists.add(map);
+        }
         Map<String, Object> map = new HashMap<>();
-        map.put("poiList", pois);
+        map.put("poiList", lists);
         responseMessage.setObjectbean(map);
         return responseMessage;
     }

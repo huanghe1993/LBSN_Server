@@ -25,7 +25,7 @@ import java.util.List;
 @RequestMapping("/api/check")
 public class CheckController {
 
-    public static final String ADDRESS = "Http://127.0.0.1:8081";
+    public static final String ADDRESS = "Http://47.107.95.148:8081";
 
     @Autowired
     private CheckService checkService;

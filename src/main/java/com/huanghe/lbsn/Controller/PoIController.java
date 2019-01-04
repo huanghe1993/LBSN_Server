@@ -25,8 +25,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/poi")
 public class PoIController {
-    public static final String ADDRESS = "Http://127.0.0.1:8081";
 
+    public static final String ADDRESS = "Http://47.107.95.148:8081";
     @Autowired
     private CheckService checkService;
 
@@ -112,6 +112,7 @@ public class PoIController {
         }
         HashMap<String, Integer> map = new HashMap<>();
         map.put("isSigned", 1);
+        responseMessage.setObjectbean(map);
         responseMessage.setStatus(1);
         return responseMessage;
     }
