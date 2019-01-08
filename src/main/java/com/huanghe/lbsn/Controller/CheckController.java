@@ -4,6 +4,7 @@ import com.huanghe.lbsn.Entity.Check;
 import com.huanghe.lbsn.Entity.User;
 import com.huanghe.lbsn.Service.CheckService;
 import com.huanghe.lbsn.Service.PoiService;
+import com.huanghe.lbsn.Service.UserService;
 import com.huanghe.lbsn.utils.BaseResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,13 +26,16 @@ import java.util.List;
 @RequestMapping("/api/check")
 public class CheckController {
 
-    public static final String ADDRESS = "Http://47.107.95.148:8081";
+    public static final String ADDRESS = "http://47.107.95.148:8081";
 
     @Autowired
     private CheckService checkService;
 
     @Autowired
     private PoiService poiService;
+
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Object addFriend(HttpServletRequest request,
@@ -43,13 +47,13 @@ public class CheckController {
             responseMessage.setMsg("请先登录！");
             return responseMessage;
         }
-        User user = (User) request.getSession().getAttribute(token);
-        if (user == null) {
+        List<User> users = userService.getUserByToken(token);
+        if (users.size() == 0) {
             responseMessage.setStatus(0);
             responseMessage.setMsg("token非法");
             return responseMessage;
         }
-        Integer userId = user.getUserid();
+        Integer userId = users.get(0).getUserid();
         List<Check> checks = checkService.getCheckListByUserId(userId);
         List<HashMap<String, Object>> lists = new ArrayList<>();
         for (Check check : checks) {

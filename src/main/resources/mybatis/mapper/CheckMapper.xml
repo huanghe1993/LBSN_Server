@@ -355,8 +355,6 @@
         poi_name,
         longitude,
         latitude,
-        rate,
-        content,
         createTime
     )
     VALUES
@@ -366,9 +364,11 @@
             #{poiName},
             #{longitude},
             #{latitude},
-            #{rate},
-            #{content},
             #{createtime}
         )
   </insert>
+
+  <update id="UpdateRateAndComment" parameterType="hashmap">
+    UPDATE `check` SET rate=#{score},content=#{commentContent} WHERE user_id =#{userId} and poi_id =#{poiId};
+  </update>
 </mapper>

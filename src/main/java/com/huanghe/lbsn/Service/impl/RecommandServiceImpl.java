@@ -7,6 +7,7 @@ import com.huanghe.lbsn.Mapper.CheckMapper;
 import com.huanghe.lbsn.Mapper.PoiMapper;
 import com.huanghe.lbsn.Mapper.RelationsMapper;
 import com.huanghe.lbsn.Service.RecommandService;
+import com.huanghe.lbsn.Service.UserService;
 import com.huanghe.lbsn.utils.LocationsUtils;
 import com.huanghe.lbsn.utils.NormailzeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ public class RecommandServiceImpl implements RecommandService {
 
     @Autowired
     private RelationsMapper relationsMapper;
+
+    @Autowired
+    private UserService userService;
 
 
     @Override
@@ -66,8 +70,8 @@ public class RecommandServiceImpl implements RecommandService {
     public  List<Integer> recommandBaseUser(HttpServletRequest request,String token,String latitude,String longitude) {
         List<Integer> poiIds = new ArrayList<>();
         //获取当前用户的签到行为
-        User user = (User)request.getSession().getAttribute(token);
-        Integer currentUserId = user.getUserid();
+        List<User> users = userService.getUserByToken(token);
+        Integer currentUserId = users.get(0).getUserid();
         List<Check> checks = checkMapper.selectCheckByUserId(currentUserId);
         //如果用户没有签到行为，按照冷启动推荐
         if (checks.size() == 0) {

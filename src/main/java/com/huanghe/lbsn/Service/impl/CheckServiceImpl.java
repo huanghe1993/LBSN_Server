@@ -100,5 +100,40 @@ public class CheckServiceImpl implements CheckService {
 
     }
 
+    /**
+     * 在check表中插入签到的用户，签到的POiId
+     * @param userId
+     * @param poiId
+     */
+    @Override
+    public void submitCheck(Integer userId, Long poiId) {
+        Check check = new Check();
+        check.setCreatetime(new Date());
+        check.setPoiId(poiId.intValue());
+        check.setUserId(userId);
+        Poi poi = poiMapper.selectByPrimaryKey(poiId.intValue());
+        check.setLatitude(poi.getLatitude());
+        check.setLongitude(poi.getLongitude());
+        check.setPoiName(poi.getAddress());
+        checkMapper.insertCheck(check);
+    }
+
+    /**
+     * 更新评论数据
+     * @param userId
+     * @param poiId
+     * @param commentContent
+     * @param score
+     */
+    @Override
+    public void UpdateRateAndComment(Integer userId, Long poiId, String commentContent, Integer score) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("poiId", poiId);
+        map.put("commentContent", commentContent);
+        map.put("score", score);
+        checkMapper.UpdateRateAndComment(map);
+    }
+
 
 }

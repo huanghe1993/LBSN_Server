@@ -225,4 +225,8 @@
       userCreateTime = #{usercreatetime,jdbcType=TIMESTAMP}
     where userId = #{userid,jdbcType=INTEGER}
   </update>
+
+  <update id="insertToken" parameterType="hashmap" >
+    UPDATE `user` SET token=#{tokenId} WHERE userId =#{userid};
+  </update>
 </mapper>

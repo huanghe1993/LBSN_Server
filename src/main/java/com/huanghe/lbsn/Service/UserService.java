@@ -38,4 +38,18 @@ public interface UserService {
      * @return
      */
     User findByToken(String token);
+
+    /**
+     * 根据用户id把token保存在数据库
+     * @param userid
+     * @param tokenId
+     */
+    void insertToken(Integer userid, String tokenId);
+
+    /**
+     * 根据用户的token获取用户
+     * @param token
+     * @return
+     */
+    List<User> getUserByToken(String token);
 }

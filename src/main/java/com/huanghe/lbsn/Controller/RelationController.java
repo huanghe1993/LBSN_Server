@@ -49,8 +49,8 @@ public class RelationController {
             responseMessage.setMsg("请先登录！");
             return responseMessage;
         }
-        User user = (User)request.getSession().getAttribute(token);
-        if (user == null) {
+        List<User> users = userService.getUserByToken(token);
+        if (users.size() == 0) {
             responseMessage.setStatus(0);
             responseMessage.setMsg("token非法");
             return responseMessage;
@@ -61,13 +61,13 @@ public class RelationController {
             responseMessage.setMsg("您添加的用户不存在！");
             return responseMessage;
         }
-        List<Relations> relations = relationService.findRelationByIds(user.getUserid(), friend.get(0).getUserid());
+        List<Relations> relations = relationService.findRelationByIds(users.get(0).getUserid(), friend.get(0).getUserid());
         if (relations.size()!=0) {
             responseMessage.setStatus(0);
             responseMessage.setMsg("您已经添加过了该用户！");
             return responseMessage;
         }
-        relationService.addFriendsById(user.getUserid(), friend.get(0).getUserid());
+        relationService.addFriendsById(users.get(0).getUserid(), friend.get(0).getUserid());
         responseMessage.setStatus(1);
         responseMessage.setMsg("添加好友成功");
         return responseMessage;
@@ -87,8 +87,8 @@ public class RelationController {
             responseMessage.setMsg("请先登录！");
             return responseMessage;
         }
-        User user = (User)request.getSession().getAttribute(token);
-        if (user == null) {
+        List<User> users1 = userService.getUserByToken(token);
+        if (users1.size() == 0) {
             responseMessage.setStatus(0);
             responseMessage.setMsg("token非法");
             return responseMessage;
@@ -100,7 +100,7 @@ public class RelationController {
             return responseMessage;
         }
         Integer friendId = users.get(0).getUserid();
-        Integer userId = user.getUserid();
+        Integer userId = users1.get(0).getUserid();
         relationService.deleteFriends(userId,friendId);
         responseMessage.setStatus(1);
         responseMessage.setMsg("删除好友成功");
@@ -118,13 +118,13 @@ public class RelationController {
             responseMessage.setMsg("请先登录！");
             return responseMessage;
         }
-        User user = (User)request.getSession().getAttribute(token);
-        if (user == null) {
+        List<User> users1 = userService.getUserByToken(token);
+        if (users1.size() == 0) {
             responseMessage.setStatus(0);
             responseMessage.setMsg("token非法");
             return responseMessage;
         }
-        Integer userId = user.getUserid();
+        Integer userId = users1.get(0).getUserid();
         List<User> users = relationService.getFriendsList(userId);
         List<HashMap<String, Object>> list = new ArrayList<>();
         for (User user_temp : users) {

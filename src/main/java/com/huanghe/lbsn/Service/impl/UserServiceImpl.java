@@ -7,7 +7,9 @@ import com.huanghe.lbsn.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author huanghe
@@ -56,6 +58,27 @@ public class UserServiceImpl implements UserService {
         example.createCriteria().andTokenEqualTo(token);
         List<User> users = userMapper.selectByExample(example);
         return users.get(0);
+    }
+
+    @Override
+    public void insertToken(Integer userid, String tokenId) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("userid", userid);
+        map.put("tokenId", tokenId);
+        userMapper.insertToken(map);
+    }
+
+    /**
+     * 根据token获取用户
+     * @param token
+     * @return
+     */
+    @Override
+    public List<User> getUserByToken(String token) {
+        UserExample example = new UserExample();
+        example.createCriteria().andTokenEqualTo(token);
+        List<User> users = userMapper.selectByExample(example);
+        return users;
     }
 
 

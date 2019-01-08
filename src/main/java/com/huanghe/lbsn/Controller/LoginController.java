@@ -3,6 +3,8 @@ package com.huanghe.lbsn.Controller;
 import com.huanghe.lbsn.Entity.User;
 import com.huanghe.lbsn.Service.UserService;
 import com.huanghe.lbsn.utils.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +22,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/user")
 public class LoginController {
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     private UserService userService;
@@ -85,7 +89,7 @@ public class LoginController {
         userService.insertUser(user);
 
         responseMessage.setStatus(1);
-        responseMessage.setMsg("手注册成功!");
+        responseMessage.setMsg("注册成功!");
         responseMessage.setObjectbean(user);
 
         return responseMessage;
@@ -117,9 +121,13 @@ public class LoginController {
         }
         String tokenId = TokenProccessor.getInstance().makeToken();
         // 用户保存在session中，key为token，值为user
-        TokenTools.saveToken(request, tokenId, user.get(0));
+        //TokenTools.saveToken(request, tokenId, user.get(0));
         //设置session的过期时间,这里设置的是永久不过期
-        TokenTools.setExpireTime(request,-1);
+        //TokenTools.setExpireTime(request, -1);
+        //直接将Token保存在数据库
+        userService.insertToken(user.get(0).getUserid(), tokenId);
+        //测试使用
+        logger.info("推荐时候获取到的token:"+tokenId);
 
         Map<String, Object> map = new HashMap<>();
         map.put("name", user.get(0).getName());
@@ -148,14 +156,14 @@ public class LoginController {
             responseMessage.setMsg("请先登录！");
             return responseMessage;
         }
-        User user = (User)request.getSession().getAttribute(tokenServerkey);
-        if (user == null) {
+        List<User> users = userService.getUserByToken(tokenServerkey);
+        if (users.size() == 0) {
             responseMessage.setStatus(0);
             responseMessage.setMsg("token非法");
             return responseMessage;
         }
 
-        TokenTools.removeToken(request,tokenServerkey);
+        userService.insertToken(users.get(0).getUserid(), "");
         responseMessage.setStatus(1);
         responseMessage.setMsg("退出成功");
 

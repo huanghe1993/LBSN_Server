@@ -36,8 +36,8 @@ public class UserController {
             responseMessage.setMsg("请先登录！");
             return responseMessage;
         }
-        User user = (User)request.getSession().getAttribute(token);
-        if (user == null) {
+        List<User> users1 = userService.getUserByToken(token);
+        if (users1.size() == 0) {
             responseMessage.setStatus(0);
             responseMessage.setMsg("token非法");
             return responseMessage;

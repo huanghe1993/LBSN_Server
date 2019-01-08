@@ -4,6 +4,7 @@ import com.huanghe.lbsn.Entity.Poi;
 import com.huanghe.lbsn.Entity.User;
 import com.huanghe.lbsn.Service.CheckService;
 import com.huanghe.lbsn.Service.PoiService;
+import com.huanghe.lbsn.Service.UserService;
 import com.huanghe.lbsn.utils.BaseResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,12 +27,15 @@ import java.util.Map;
 @RequestMapping("/api/poi")
 public class PoIController {
 
-    public static final String ADDRESS = "Http://47.107.95.148:8081";
+    public static final String ADDRESS = "http://47.107.95.148:8081";
     @Autowired
     private CheckService checkService;
 
     @Autowired
     private PoiService poiService;
+
+    @Autowired
+    private UserService userService;
 
     /**
      * 热点详情页的数据
@@ -96,13 +100,13 @@ public class PoIController {
             responseMessage.setMsg("请先登录！");
             return responseMessage;
         }
-        User user = (User)request.getSession().getAttribute(token);
-        if (user == null) {
+        List<User> users = userService.getUserByToken(token);
+        if (users.size() == 0) {
             responseMessage.setStatus(0);
             responseMessage.setMsg("token非法");
             return responseMessage;
         }
-        Integer userId = user.getUserid();
+        Integer userId = users.get(0).getUserid();
         List<Map<String, Object>> checks = checkService.getCheckByUserIdAndPoiId(userId, poiId.intValue());
         if (checks.size() == 0) {
             HashMap<String, Integer> map = new HashMap<>();
@@ -117,9 +121,41 @@ public class PoIController {
         return responseMessage;
     }
 
+    /**
+     * 签到POI
+     * @param token
+     * @param poiId
+     * @return
+     */
+    @RequestMapping(value = "/submitCheck", method = RequestMethod.POST)
+    public Object checkSubmit(@RequestParam(value = "token") String token,
+                              @RequestParam(value = "poiId") Long poiId){
+
+        BaseResponse<User> responseMessage = new BaseResponse<>();
+        responseMessage.setTime(System.currentTimeMillis());
+        if (token == null) {
+            responseMessage.setStatus(0);
+            responseMessage.setMsg("请先登录！");
+            return responseMessage;
+        }
+        List<User> users = userService.getUserByToken(token);
+        if (users.size() == 0) {
+            responseMessage.setStatus(0);
+            responseMessage.setMsg("token非法");
+            return responseMessage;
+        }
+        Integer userId = users.get(0).getUserid();
+        checkService.submitCheck(userId,poiId);
+        responseMessage.setStatus(1);
+        responseMessage.setMsg("提交成功");
+        return responseMessage;
+    }
+
+
+
 
     /**
-     * 提交签到，和POI评论
+     * 和POI评论
      * @param request
      * @param token
      * @param poiId
@@ -140,14 +176,21 @@ public class PoIController {
             responseMessage.setMsg("请先登录！");
             return responseMessage;
         }
-        User user = (User) request.getSession().getAttribute(token);
-        if (user == null) {
+        List<User> users = userService.getUserByToken(token);
+        if (users.size() == 0) {
             responseMessage.setStatus(0);
             responseMessage.setMsg("token非法");
             return responseMessage;
         }
-        Integer userId = user.getUserid();
-        checkService.submitCheckAndComment(userId,poiId,commentContent,score);
+        Integer userId = users.get(0).getUserid();
+        //判断是否签到
+        List<Map<String, Object>> checks = checkService.getCheckByUserIdAndPoiId(userId, poiId.intValue());
+        if (checks.size() == 0) {
+            responseMessage.setMsg("您还没有签到");
+            responseMessage.setStatus(0);
+            return responseMessage;
+        }
+        checkService.UpdateRateAndComment(userId,poiId,commentContent,score);
         responseMessage.setStatus(1);
         responseMessage.setMsg("提交成功");
         return responseMessage;

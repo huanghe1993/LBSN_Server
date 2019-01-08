@@ -46,4 +46,20 @@ public interface CheckService {
      * @param score
      */
     void submitCheckAndComment(Integer userId, Long poiId, String commentContent, Integer score);
+
+    /**
+     * 在check表中插入签到的用户，签到的POiId
+     * @param userId
+     * @param poiId
+     */
+    void submitCheck(Integer userId, Long poiId);
+
+    /**
+     * 根据用户id和POi的id更新评论数据
+     * @param userId
+     * @param poiId
+     * @param commentContent
+     * @param score
+     */
+    void UpdateRateAndComment(Integer userId, Long poiId, String commentContent, Integer score);
 }

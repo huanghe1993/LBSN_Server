@@ -2,6 +2,8 @@ package com.huanghe.lbsn.Mapper;
 
 import com.huanghe.lbsn.Entity.Check;
 import com.huanghe.lbsn.Entity.CheckExample;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,4 +47,6 @@ public interface CheckMapper {
     List<Map<String,Object>> getCheckByUserIdAndPoiId(Map map);
 
     void insertCheck(Check check);
+
+    void UpdateRateAndComment(HashMap<String,Object> map);
 }
