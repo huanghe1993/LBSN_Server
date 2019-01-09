@@ -41,7 +41,7 @@ public class RecommandServiceImpl implements RecommandService {
     public List<Poi> recommand(HttpServletRequest request , String token, String latitude, String longitude) {
         List<Poi> poiList = new ArrayList<>();
         //如果当前用户未登陆或者是当前用户没有任何的行为记录
-        if (token == null) {
+        if (token == null || "null".equals(token)) {
             List<Integer> poiIds = recommandNoUser(latitude, longitude);
             for (Integer poiId : poiIds) {
                 Poi poi = poiMapper.selectByPrimaryKey(poiId);

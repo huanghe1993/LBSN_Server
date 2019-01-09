@@ -6,6 +6,7 @@ import com.huanghe.lbsn.Service.PoiService;
 import com.huanghe.lbsn.Service.RecommandService;
 import com.huanghe.lbsn.Service.UserService;
 import com.huanghe.lbsn.utils.BaseResponse;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,8 +60,9 @@ public class RecommandController {
                          @RequestParam(value = "token",required = false) String token) {
         BaseResponse<User> responseMessage = new BaseResponse<>();
         responseMessage.setTime(System.currentTimeMillis());
+        System.out.println(token);
         //如果Token不为空
-        if (token != null) {
+        if (StringUtils.isNotEmpty(token) && !"null".equals(token)) {
             List<User> users = userService.getUserByToken(token);
             if (users.size() == 0) {
                 responseMessage.setStatus(0);

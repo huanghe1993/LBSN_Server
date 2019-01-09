@@ -120,10 +120,6 @@ public class LoginController {
             return responseMessage;
         }
         String tokenId = TokenProccessor.getInstance().makeToken();
-        // 用户保存在session中，key为token，值为user
-        //TokenTools.saveToken(request, tokenId, user.get(0));
-        //设置session的过期时间,这里设置的是永久不过期
-        //TokenTools.setExpireTime(request, -1);
         //直接将Token保存在数据库
         userService.insertToken(user.get(0).getUserid(), tokenId);
         //测试使用
