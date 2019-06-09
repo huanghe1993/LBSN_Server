@@ -67,9 +67,11 @@ public class CheckController {
             map.put("tinyPhoto", ADDRESS+poiService.getPoiById(check.getPoiId()).getTinyPhoto());
             lists.add(map);
         }
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("signedList", lists);
         responseMessage.setStatus(1);
         responseMessage.setMsg("获取成功");
-        responseMessage.setObjectbean(lists);
+        responseMessage.setObjectbean(map);
 
         return responseMessage;
     }

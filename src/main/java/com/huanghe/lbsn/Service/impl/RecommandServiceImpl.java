@@ -38,7 +38,7 @@ public class RecommandServiceImpl implements RecommandService {
 
 
     @Override
-    public List<Poi> recommand(HttpServletRequest request , String token, String latitude, String longitude) {
+    public List<Poi> recommand(HttpServletRequest request, String token, String latitude, String longitude) {
         List<Poi> poiList = new ArrayList<>();
         //如果当前用户未登陆或者是当前用户没有任何的行为记录
         if (token == null || "null".equals(token)) {
@@ -50,7 +50,7 @@ public class RecommandServiceImpl implements RecommandService {
             return poiList;
         }
         //获取当前用户的签到行为记录
-        List<Integer> poiIds = recommandBaseUser(request,token, latitude, longitude);
+        List<Integer> poiIds = recommandBaseUser(request, token, latitude, longitude);
         for (Integer poiId : poiIds) {
             Poi poi = poiMapper.selectByPrimaryKey(poiId);
             poiList.add(poi);
@@ -62,12 +62,13 @@ public class RecommandServiceImpl implements RecommandService {
 
     /**
      * 基于用户的协同过滤推荐算法,用户已经登陆
+     *
      * @param token：用户的token指令
      * @param latitude：维度
      * @param longitude：经度
      * @return
      */
-    public  List<Integer> recommandBaseUser(HttpServletRequest request,String token,String latitude,String longitude) {
+    public List<Integer> recommandBaseUser(HttpServletRequest request, String token, String latitude, String longitude) {
         List<Integer> poiIds = new ArrayList<>();
         //获取当前用户的签到行为
         List<User> users = userService.getUserByToken(token);
@@ -106,7 +107,7 @@ public class RecommandServiceImpl implements RecommandService {
         //POI的位置数
         Integer POI_NUM = poiSet.size();
         //用户-POI-签到次数
-        List<Map<String,Object>> user_check_count = checkMapper.getUserCheckCount();
+        List<Map<String, Object>> user_check_count = checkMapper.getUserCheckCount();
 
         //三、得到好友关系数据(key是存放的是用户的id,value值是这个用户的好友)
         HashMap<Integer, Set<String>> relations = new HashMap<>();
@@ -117,17 +118,18 @@ public class RecommandServiceImpl implements RecommandService {
             relations.put(userId, friends_set);
         }
         //基于用户的协同过滤推荐算法，计算出当前用户推荐id的得分值
-        List<Integer> UCF_recommand = recommand(userSet,poiSet, user_check_count, currentUserID,latitude,longitude,relations);
+        List<Integer> UCF_recommand = recommand(userSet, poiSet, user_check_count, currentUserID, latitude, longitude, relations);
         return UCF_recommand;
     }
 
     /**
      * 推荐地点位置，用户未登陆
+     *
      * @param latitude：纬度
      * @param longitude：经度
      * @return 推荐地点id的集合
      */
-    public  List<Integer> recommandNoUser(String latitude,String longitude) {
+    public List<Integer> recommandNoUser(String latitude, String longitude) {
         List<Integer> poiList = new ArrayList<>();
         //1、获取poi平均得分列表,从高到低的排序，默认获取20个
         List<Map<Integer, Object>> poiAvgScore = checkMapper.getPoiAvgScore();
@@ -135,25 +137,25 @@ public class RecommandServiceImpl implements RecommandService {
             poiList.add(Integer.parseInt(map.get("poi_id").toString()));
         }
         //2、从获取的地点计算距离的
-        HashMap<Integer,Double> distanceMap = new HashMap<>();
+        HashMap<Integer, Double> distanceMap = new HashMap<>();
         for (Integer poiId : poiList) {
             Poi poi = poiMapper.selectByPrimaryKey(poiId);
-            distanceMap.put(poiId,LocationsUtils.getDistance(Double.valueOf(latitude), Double.valueOf(longitude), Double.valueOf(poi.getLatitude()), Double.valueOf(poi.getLongitude())));
+            distanceMap.put(poiId, LocationsUtils.getDistance(Double.valueOf(latitude), Double.valueOf(longitude), Double.valueOf(poi.getLatitude()), Double.valueOf(poi.getLongitude())));
         }
         //3、获取每个poi的签到的次数
-        HashMap<Integer,Double> countMap = new HashMap<>();
+        HashMap<Integer, Double> countMap = new HashMap<>();
         for (Map<Integer, Object> map : poiAvgScore) {
-            countMap.put(Integer.parseInt(map.get("poi_id").toString()),Double.valueOf(map.get("poiCount").toString()));
+            countMap.put(Integer.parseInt(map.get("poi_id").toString()), Double.valueOf(map.get("poiCount").toString()));
         }
         //4、获取每个位置签到的平均得分值
-        HashMap<Integer,Double> poiScoreMap = new HashMap<>();
+        HashMap<Integer, Double> poiScoreMap = new HashMap<>();
         for (Map<Integer, Object> map : poiAvgScore) {
-            poiScoreMap.put(Integer.parseInt(map.get("poi_id").toString()),Double.valueOf(map.get("avgScore").toString()));
+            poiScoreMap.put(Integer.parseInt(map.get("poi_id").toString()), Double.valueOf(map.get("avgScore").toString()));
         }
         //5、数据归一化处理
-        HashMap<Integer,Double> DistanceScore =new NormailzeUtils().normailzeDistance(distanceMap);
-        HashMap<Integer,Double> CountScore = new NormailzeUtils().normailze(countMap);
-        HashMap<Integer,Double> AvgScore = new NormailzeUtils().normailze(poiScoreMap);
+        HashMap<Integer, Double> DistanceScore = new NormailzeUtils().normailzeDistance(distanceMap);
+        HashMap<Integer, Double> CountScore = new NormailzeUtils().normailze(countMap);
+        HashMap<Integer, Double> AvgScore = new NormailzeUtils().normailze(poiScoreMap);
 
         //6、计算最后的得分值 score = αCountScore + βDistanceScore +(1-α-β)AvgScore ,取α=0.5 取β=0.3
         LinkedHashMap<Integer, Double> FianlScore = new LinkedHashMap<>();
@@ -168,13 +170,13 @@ public class RecommandServiceImpl implements RecommandService {
         Collections.sort(list, new Comparator<Map.Entry<Integer, Double>>() {
             @Override
             public int compare(Map.Entry<Integer, Double> o1, Map.Entry<Integer, Double> o2) {
-                return (int)(o2.getValue() - o1.getValue());
+                return (int) (o2.getValue() - o1.getValue());
             }
         });
         //8、取出推荐前10的id
         int count = 0;
         List<Integer> recommandPoi = new ArrayList<>();
-        for(Map.Entry<Integer, Double> t:list){
+        for (Map.Entry<Integer, Double> t : list) {
             if (count++ >= 10) {
                 break;
             }
@@ -184,14 +186,13 @@ public class RecommandServiceImpl implements RecommandService {
     }
 
     /**
-     *
      * @param poiSet:poi地点集合
      * @param user_check_count：用户签到的次数
      * @param currentUserID:当前用户id
      * @return
      */
-    public  List<Integer> recommand(Set<String> userSet,Set<String> poiSet,List<Map<String,Object>> user_check_count,
-                                    Integer currentUserID,String latitude,String longitude,HashMap<Integer, Set<String>> relations) {
+    public List<Integer> recommand(Set<String> userSet, Set<String> poiSet, List<Map<String, Object>> user_check_count,
+                                   Integer currentUserID, String latitude, String longitude, HashMap<Integer, Set<String>> relations) {
         //一、基于用户的协同过滤
         //1、当前用户签到集合，所有用户的签到集合，所有用户的签到次数
         Set<String> current_user_poi = new LinkedHashSet<>();
@@ -260,7 +261,7 @@ public class RecommandServiceImpl implements RecommandService {
         //poi_score的数据结构是当前用户与其他的用户之间的相似度
         HashMap<Integer, Double> fianl_CF_poi_score = new HashMap<>();
         for (String poi : result) {
-            Double score=0.0;
+            Double score = 0.0;
             for (Map.Entry<Integer, Double> user_simility_map : poi_score.entrySet()) {
                 //获取相似用户在该地点poi处的打分值 * 用户的相似度
                 score += Double.parseDouble(user_poi_score.get(user_simility_map.getKey()).get(poi)) * user_simility_map.getValue();
@@ -269,24 +270,28 @@ public class RecommandServiceImpl implements RecommandService {
         }
 
         //二、计算未访问的位置距离当前的位置的距离，距离得分(key是位置id,value是距离值)
-        HashMap<Integer,Double> distanceMap = new HashMap<>();
+        HashMap<Integer, Double> distanceMap = new HashMap<>();
         for (String poiId : result) {
             Poi poi = poiMapper.selectByPrimaryKey(Integer.valueOf(poiId));
-            distanceMap.put(Integer.valueOf(poiId),LocationsUtils.getDistance(Double.valueOf(latitude), Double.valueOf(longitude), Double.valueOf(poi.getLatitude()), Double.valueOf(poi.getLongitude())));
+            distanceMap.put(Integer.valueOf(poiId), LocationsUtils.getDistance(Double.valueOf(latitude), Double.valueOf(longitude), Double.valueOf(poi.getLatitude()), Double.valueOf(poi.getLongitude())));
         }
 
         //三、根据好友关系计算待推荐位置的得分值  公式η*Jaccard_Friend+(1-η)*Jaccard_check_in
         //3.1、计算当前用户与当前用户的好友之间的相似度
         double weight_a = 0.6;
+        HashMap<Integer, Double> fianl_Relation_poi_score = new HashMap<>();
         HashMap<Integer, Double> Jaccard_Friend = new HashMap<>();
         Set<String> currendUser_Friend_set = new LinkedHashSet<>();
         currendUser_Friend_set = relations.get(currentUserID);
+        //如果当前用户没有好友就不需要计算好友得分
         for (Map.Entry<Integer, Set<String>> map : relations.entrySet()) {
-            if (map.getKey().equals(currentUserID)) {
-                continue;
+            //如果当前用户没有好友则得分为0
+            if (currendUser_Friend_set == null) {
+                Jaccard_Friend.put(map.getKey(), 0.0);
             }
+
             //如果此用户是好有的朋友才会去计算两者之间的相似度，否则不计算
-            if (currendUser_Friend_set.contains(map.getKey().toString())){
+            if (currendUser_Friend_set!= null && currendUser_Friend_set.contains(map.getKey().toString())) {
                 Double similarity = calculatorFriends(currendUser_Friend_set, map.getValue());
                 Jaccard_Friend.put(map.getKey(), similarity);
             }
@@ -294,31 +299,45 @@ public class RecommandServiceImpl implements RecommandService {
         //3.2 计算当前用户与其他的用户之间签到地点的相似度（key是当前用户的好友用户，value是当前用户与他的好友用户之间签到的相似度）
         HashMap<Integer, Double> jaccard_check_in = new HashMap<>();
         for (Map.Entry<Integer, Set<String>> map : user_poi.entrySet()) {
-            if (currendUser_Friend_set.contains(map.getKey().toString())) {
+            //如果当前用户没有好友则得分为0
+            if (currendUser_Friend_set == null) {
+                jaccard_check_in.put(map.getKey(), 0.0);
+            }
+            //如果此用户是好有的朋友才会去计算两者之间的相似度，否则不计算
+            if (currendUser_Friend_set!= null && currendUser_Friend_set.contains(map.getKey().toString())) {
                 Double similarirt = calculatorPOI(current_user_poi, map.getValue());
                 jaccard_check_in.put(map.getKey(), similarirt);
             }
         }
         //3.3、计算给待推荐位置的分数值
-        HashMap<Integer, Double> fianl_Relation_poi_score = new HashMap<>();
         for (String poi : result) {
-            Double score=0.0;
-            for (String friendId : currendUser_Friend_set) {
-                //获取相似用户在该地点poi处的打分值 * 用户的相似度
-                if (!userSet.contains(friendId)) {
-                    score += 0.0;
-                } else {
-                    //如果当前用户的好友不在所有签到的用户中，则score加的值为0
-                    score += Double.parseDouble(user_poi_score.get(Integer.valueOf(friendId)).get(poi)) * (Jaccard_Friend.get(Integer.valueOf(friendId)) * weight_a + (1 - weight_a) * jaccard_check_in.get(Integer.valueOf(friendId)));
+            Double score = 0.0;
+            if (currendUser_Friend_set ==null){
+                fianl_Relation_poi_score.put(Integer.valueOf(poi), score);
+            }else {
+                for (String friendId : currendUser_Friend_set) {
+                    //获取相似用户在该地点poi处的打分值 * 用户的相似度
+                    if (!userSet.contains(friendId)) {
+                        score += 0.0;
+                    } else {
+                        //如果当前用户的好友不在所有签到的用户中，则score加的值为0
+                        System.out.println(user_poi_score.get(Integer.valueOf(friendId)));
+                        System.out.println(Double.parseDouble(user_poi_score.get(Integer.valueOf(friendId)).get(poi)));
+                        System.out.println(Jaccard_Friend.get(Integer.valueOf(friendId)));
+                        System.out.println(jaccard_check_in.get(Integer.valueOf(friendId)));
+
+
+                        score += Double.parseDouble(user_poi_score.get(Integer.valueOf(friendId)).get(poi)) * (Jaccard_Friend.get(Integer.valueOf(friendId)) * weight_a + (1 - weight_a) * jaccard_check_in.get(Integer.valueOf(friendId)));
+                    }
                 }
+                fianl_Relation_poi_score.put(Integer.valueOf(poi), score);
             }
-            fianl_Relation_poi_score.put(Integer.valueOf(poi), score);
         }
 
         //数据归一化处理
-        HashMap<Integer,Double> DistanceScore =new NormailzeUtils().normailzeDistance(distanceMap);
-        HashMap<Integer,Double> CFScore = new NormailzeUtils().normailze(fianl_CF_poi_score);
-        HashMap<Integer,Double> RelationsScore = new NormailzeUtils().normailze(fianl_Relation_poi_score);
+        HashMap<Integer, Double> DistanceScore = new NormailzeUtils().normailzeDistance(distanceMap);
+        HashMap<Integer, Double> CFScore = new NormailzeUtils().normailze(fianl_CF_poi_score);
+        HashMap<Integer, Double> RelationsScore = new NormailzeUtils().normailze(fianl_Relation_poi_score);
 
         //6、计算最后的得分值 score = αCountScore + βDistanceScore +(1-α-β)AvgScore ,取α=0.5 取β=0.3
         LinkedHashMap<Integer, Double> FianlScore = new LinkedHashMap<>();
@@ -333,13 +352,13 @@ public class RecommandServiceImpl implements RecommandService {
         Collections.sort(list, new Comparator<Map.Entry<Integer, Double>>() {
             @Override
             public int compare(Map.Entry<Integer, Double> o1, Map.Entry<Integer, Double> o2) {
-                return (int)(o2.getValue() - o1.getValue());
+                return (int) (o2.getValue() - o1.getValue());
             }
         });
         //8、取出推荐前10的id
         int count = 0;
         List<Integer> recommandPoi = new ArrayList<>();
-        for(Map.Entry<Integer, Double> t:list){
+        for (Map.Entry<Integer, Double> t : list) {
             if (count++ >= 10) {
                 break;
             }
@@ -393,11 +412,12 @@ public class RecommandServiceImpl implements RecommandService {
 
     /**
      * 计算两个用户之间的相似度，使用余弦相似度
+     *
      * @param current_user_poi：当前用户的签到位置集合
      * @param other_user_poi：其他的用户签到的位置集合
      * @return
      */
-    public  Double calculator(Set<String> current_user_poi, Set<String> other_user_poi) {
+    public Double calculator(Set<String> current_user_poi, Set<String> other_user_poi) {
         //计算签到的集合的交集
         Set<String> result = new HashSet<String>();
         result.addAll(current_user_poi);
@@ -405,14 +425,14 @@ public class RecommandServiceImpl implements RecommandService {
         //交集的长度，分子
         int intersection = result.size();
         //每个集合的长度，分母√ ×√
-        double union =Math.sqrt(current_user_poi.size()) * Math.sqrt(other_user_poi.size());
+        double union = Math.sqrt(current_user_poi.size()) * Math.sqrt(other_user_poi.size());
         return intersection / union;
     }
 
 
-
     /**
      * 根据用户的ID查询用户的签到信息
+     *
      * @param userId
      * @return
      */
@@ -421,9 +441,4 @@ public class RecommandServiceImpl implements RecommandService {
         List<Check> checks = checkMapper.selectCheckByUserId(userId);
         return checks;
     }
-
-
-
-
-
 }
