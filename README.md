@@ -16,12 +16,6 @@
 
 <img src="http://man.hhaxmm.cn/blog/20190609/g8xgohJC2eGz.jpg" height ='500' width="300px" align='left' />
 
-
-
-> 粉色圈：当前用户的位置
->
-> 红色带数字：推荐的位置
-
 - 推荐列表
 
 <img src="http://man.hhaxmm.cn/blog/20190609/jABkst8KiUPT.jpg" height ='500' width="300px" align='left' />
