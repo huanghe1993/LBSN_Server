@@ -14,16 +14,18 @@
 
 - 未登陆时的效果
 
-<img src="http://man.hhaxmm.cn/blog/20190609/g8xgohJC2eGz.jpg" height ='500' width="300px" align='left' />
+![mark](http://man.hhaxmm.cn/blog/20190609/zgifFAQoFqfu.png)
+
+
 
 - 推荐列表
 
-<img src="http://man.hhaxmm.cn/blog/20190609/jABkst8KiUPT.jpg" height ='500' width="300px" align='left' />
+![mark](http://man.hhaxmm.cn/blog/20190609/rOj3kedCIngj.png)
 
 - 签到留言操作
 
-<img src="http://man.hhaxmm.cn/blog/20190609/aYiNPTLrkNdj.jpg" height ='500' width="300px" align='left' />
+![mark](http://man.hhaxmm.cn/blog/20190609/3SHK6SPxEWrk.png)
 
 - 评分操作
 
-<img src="http://man.hhaxmm.cn/blog/20190609/rfAJ9jYz0Pli.jpg" height ='500' width="300px" align='left' />
+![mark](http://man.hhaxmm.cn/blog/20190609/W9gzfmacihtb.png)
